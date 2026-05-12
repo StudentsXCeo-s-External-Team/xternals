@@ -37,15 +37,20 @@ const MEDIA_LOGOS = [
 // ============================================================
 
 export default async function Home() {
-  const dashboardNews = await getNewsList(4);
-  const newsItems = dashboardNews.length > 0
-    ? dashboardNews.map((n) => ({
-        slug: n.slug,
-        cover: n.image_url ?? "/news/onboarding-session/cover.jpeg",
-        category: "NEWS",
-        title: n.title,
-      }))
-    : NEWS.map((n) => ({ slug: n.slug, cover: n.cover, category: n.category, title: n.title }));
+  const dashboardNews = await getNewsList(10);
+  const dashboardSlugs = new Set(dashboardNews.map((n) => n.slug));
+  // Merge: dashboard first, then static items not already in dashboard (match by slug)
+  const newsItems = [
+    ...dashboardNews.map((n) => ({
+      slug: n.slug,
+      cover: n.image_url ?? "",
+      category: "NEWS",
+      title: n.title,
+    })),
+    ...NEWS
+      .filter((n) => !dashboardSlugs.has(n.slug))
+      .map((n) => ({ slug: n.slug, cover: n.cover, category: n.category, title: n.title })),
+  ].slice(0, 4);
   return (
     <main className="relative min-h-[50svh] w-full bg-black text-white overflow-hidden">
       <ScrollGradient />

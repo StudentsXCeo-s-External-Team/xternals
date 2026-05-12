@@ -100,7 +100,12 @@ function EventCard({ event }: { event: DashboardEvent }) {
 
 export default async function EventsPage() {
   const dashboardEvents = await getEventsList(20);
-  const events = dashboardEvents.length > 0 ? dashboardEvents : STATIC_EVENTS;
+  const dashboardIds = new Set(dashboardEvents.map((e) => e.id));
+  // Merge: dashboard first, then static items not already covered by dashboard (match by id)
+  const events = [
+    ...dashboardEvents,
+    ...STATIC_EVENTS.filter((e) => !dashboardIds.has(e.id)),
+  ];
   const [featured, ...rest] = events;
 
   return (
