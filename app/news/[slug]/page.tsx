@@ -3,14 +3,65 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { NEWS } from "../../../data/news";
 import NewsGallery from "../../../components/NewsGallery";
+import { getNewsBySlug, getNewsList, excerptFromContent, formatDate } from "@/lib/dashboard";
 
-export function generateStaticParams() {
+export const revalidate = 60;
+
+type UnifiedNews = {
+  slug: string;
+  title: string;
+  category: string;
+  date: string;
+  author?: string;
+  cover: string;
+  hero: string;
+  images: string[];
+  excerpt: string;
+  content: string;
+};
+
+async function resolveNews(slug: string): Promise<UnifiedNews | null> {
+  // Try dashboard first
+  const remote = await getNewsBySlug(slug);
+  if (remote) {
+    const img = remote.image_url ?? "";
+    return {
+      slug: remote.slug,
+      title: remote.title,
+      category: "NEWS",
+      date: formatDate(remote.published_at ?? remote.created_at),
+      author: remote.author ?? undefined,
+      cover: img,
+      hero: img,
+      images: [],
+      excerpt: excerptFromContent(remote.content, 220),
+      content: remote.content,
+    };
+  }
+  // Fallback to static data
+  const local = NEWS.find((n) => n.slug === slug);
+  if (!local) return null;
+  return {
+    slug: local.slug,
+    title: local.title,
+    category: local.category,
+    date: local.date,
+    author: local.author,
+    cover: local.cover,
+    hero: local.hero,
+    images: local.images,
+    excerpt: local.excerpt,
+    content: local.content,
+  };
+}
+
+export async function generateStaticParams() {
   return NEWS.map((item) => ({ slug: item.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const item = NEWS.find((n) => n.slug === slug);
+  const item = await resolveNews(slug);
   if (!item) return {};
   return {
     title: `${item.title} — StudentsxCEOs Jakarta`,
@@ -20,11 +71,29 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function NewsDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const item = NEWS.find((n) => n.slug === slug);
+  const [item, dashboardNews] = await Promise.all([
+    resolveNews(slug),
+    getNewsList(10),
+  ]);
+
   if (!item) return notFound();
 
-  // Related articles — up to 3 others, excluding current
-  const related = NEWS.filter((n) => n.slug !== item.slug).slice(0, 3);
+  const relatedFromDashboard = dashboardNews
+    .filter((n) => n.slug !== slug)
+    .slice(0, 3)
+    .map((n) => ({
+      slug: n.slug,
+      title: n.title,
+      category: "NEWS",
+      date: formatDate(n.published_at ?? n.created_at),
+      cover: n.image_url ?? "",
+    }));
+
+  const related = relatedFromDashboard.length > 0
+    ? relatedFromDashboard
+    : NEWS.filter((n) => n.slug !== slug)
+        .slice(0, 3)
+        .map((n) => ({ slug: n.slug, title: n.title, category: n.category, date: n.date, cover: n.cover }));
 
   return (
     <main className="relative w-full bg-white text-zinc-900 overflow-hidden">
@@ -56,24 +125,22 @@ export default async function NewsDetail({ params }: { params: Promise<{ slug: s
         </div>
 
         {/* Layer 3: Clean edge fades */}
-        <div 
+        <div
           className="absolute bottom-0 left-0 right-0 h-24 z-20 pointer-events-none"
           style={{ background: "linear-gradient(to top, white 0%, rgba(255,255,255,0.6) 30%, transparent 100%)" }}
         />
-        
-        <div 
+        <div
           className="absolute inset-y-0 left-0 w-12 z-20 pointer-events-none hidden sm:block"
           style={{ background: "linear-gradient(to right, white, transparent)" }}
         />
-        <div 
+        <div
           className="absolute inset-y-0 right-0 w-12 z-20 pointer-events-none hidden sm:block"
           style={{ background: "linear-gradient(to left, white, transparent)" }}
         />
       </section>
 
-      {/* Header block — cleanly on white, no overlap with the image */}
+      {/* Header block */}
       <section className="relative z-10 mx-auto max-w-5xl px-6 sm:px-10 pt-6 pb-0">
-        {/* Back link */}
         <Link
           href="/"
           className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-blue-600 transition-colors mb-8 group"
@@ -84,19 +151,16 @@ export default async function NewsDetail({ params }: { params: Promise<{ slug: s
           Back to Home
         </Link>
 
-        {/* Category pill */}
         <div className="flex items-center gap-3 mb-4">
           <span className="inline-flex px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-600 text-xs font-semibold tracking-widest uppercase">
             {item.category}
           </span>
         </div>
 
-        {/* Title */}
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.05] max-w-3xl text-zinc-900">
           {item.title}
         </h1>
 
-        {/* Meta row */}
         <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-zinc-400">
           {item.author && (
             <span className="flex items-center gap-2">
@@ -107,7 +171,6 @@ export default async function NewsDetail({ params }: { params: Promise<{ slug: s
           <span>{item.date}</span>
         </div>
 
-        {/* Divider */}
         <div className="mt-8 h-px w-full bg-zinc-200" />
       </section>
 
@@ -115,7 +178,6 @@ export default async function NewsDetail({ params }: { params: Promise<{ slug: s
       <section className="relative z-10 mx-auto max-w-5xl px-6 sm:px-10 py-12 sm:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
 
-          {/* Left accent bar — decorative, desktop only */}
           <div className="hidden lg:block lg:col-span-1">
             <div className="sticky top-28 flex flex-col items-center gap-3">
               <div className="h-20 w-[2px] bg-blue-600" />
@@ -123,28 +185,22 @@ export default async function NewsDetail({ params }: { params: Promise<{ slug: s
             </div>
           </div>
 
-          {/* Article body */}
           <div className="lg:col-span-8">
-            {/* Excerpt / lead paragraph */}
             <p className="text-xl sm:text-2xl text-zinc-700 font-medium leading-relaxed border-l-2 border-blue-600 pl-5 mb-10">
               {item.excerpt}
             </p>
 
-            {/* Full content — split on double newline into paragraphs */}
             <div className="space-y-6 text-base sm:text-lg text-zinc-600 leading-relaxed">
               {item.content.split("\n\n").map((para, i) => (
                 <p key={i} dangerouslySetInnerHTML={{ __html: para }} />
               ))}
             </div>
 
-            {/* Gallery — only rendered if images array has entries */}
             <NewsGallery images={item.images} title={item.title} />
           </div>
 
-          {/* Right sidebar */}
           <aside className="lg:col-span-3">
             <div className="sticky top-28 space-y-6">
-              {/* Share block */}
               <div className="rounded-xl border border-zinc-200 bg-white shadow-sm p-5">
                 <p className="text-xs font-semibold tracking-widest text-zinc-400 uppercase mb-4">Share</p>
                 <div className="flex flex-col gap-2">
@@ -169,7 +225,6 @@ export default async function NewsDetail({ params }: { params: Promise<{ slug: s
                 </div>
               </div>
 
-              {/* Category tag */}
               <div className="rounded-xl border border-zinc-200 bg-white shadow-sm p-5">
                 <p className="text-xs font-semibold tracking-widest text-zinc-400 uppercase mb-3">Category</p>
                 <span className="inline-flex px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-600 text-xs font-semibold tracking-wider">
@@ -177,7 +232,6 @@ export default async function NewsDetail({ params }: { params: Promise<{ slug: s
                 </span>
               </div>
 
-              {/* Date block */}
               <div className="rounded-xl border border-zinc-200 bg-white shadow-sm p-5">
                 <p className="text-xs font-semibold tracking-widest text-zinc-400 uppercase mb-2">Published</p>
                 <p className="text-sm text-zinc-700 font-medium">{item.date}</p>
@@ -204,12 +258,14 @@ export default async function NewsDetail({ params }: { params: Promise<{ slug: s
                   href={`/news/${rel.slug}`}
                   className="group relative h-[300px] overflow-hidden rounded-xl bg-zinc-200"
                 >
-                  <Image
-                    src={rel.cover}
-                    alt={rel.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+                  {rel.cover && (
+                    <Image
+                      src={rel.cover}
+                      alt={rel.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                   <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-blue-600 group-hover:w-full transition-all duration-500" />
                   <div className="absolute inset-0 p-5 flex flex-col justify-end">

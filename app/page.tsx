@@ -3,6 +3,7 @@ import Link from "next/link";
 import ScrollGradient from "../components/ScrollGradient";
 import ScrollReveal from "../components/ScrollReveal";
 import { NEWS } from "../data/news";
+import { getNewsList } from "@/lib/dashboard";
 import { PROGRAMS } from "../data/programs";
 import { sponsors } from "@/data/sponsor";
 import { mediaPartners } from "@/data/mediapartners";
@@ -35,7 +36,16 @@ const MEDIA_LOGOS = [
 // Page Design Section
 // ============================================================
 
-export default function Home() {
+export default async function Home() {
+  const dashboardNews = await getNewsList(4);
+  const newsItems = dashboardNews.length > 0
+    ? dashboardNews.map((n) => ({
+        slug: n.slug,
+        cover: n.image_url ?? "/news/onboarding-session/cover.jpeg",
+        category: "NEWS",
+        title: n.title,
+      }))
+    : NEWS.map((n) => ({ slug: n.slug, cover: n.cover, category: n.category, title: n.title }));
   return (
     <main className="relative min-h-[50svh] w-full bg-black text-white overflow-hidden">
       <ScrollGradient />
@@ -191,9 +201,8 @@ export default function Home() {
             <h2 className="text-3xl sm:text-4xl font-extrabold text-zinc-900">Our Latest News</h2>
           </div>
           <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-            {NEWS.map((item) => (
+            {newsItems.map((item) => (
               <Link key={item.slug} href={`/news/${item.slug}`} className="group relative h-[520px] sm:h-[640px] overflow-hidden rounded-lg js-reveal">
-                {/* Card background image — sourced from the image field on the content part */}
                 <Image
                   src={item.cover}
                   alt={item.title}
