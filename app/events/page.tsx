@@ -2,54 +2,6 @@ import { Metadata } from "next";
 import Image from "next/image";
 import { getEventsList, formatDate, DashboardEvent } from "@/lib/dashboard";
 
-// Static fallback events — shown when dashboard has no data
-const STATIC_EVENTS = [
-  {
-    id: "evt-onboarding",
-    title: "StudentsxCEOs Jakarta Batch 14 Officially Kicks Off with Onboarding Session",
-    description: "StudentsxCEOs Jakarta Batch 14 officially began with an onboarding session introducing new apprentices to the organization, its vision, and upcoming initiatives.",
-    image_url: "/news/onboarding-session/cover.jpeg",
-    start_date: "2026-02-15T00:00:00.000Z",
-    end_date: null,
-    location: "StudentsxCEOs Jakarta",
-    is_published: true,
-    created_at: "2026-02-15T00:00:00.000Z",
-  },
-  {
-    id: "evt-1",
-    title: "Apprentices of SxC Jakarta Kick Off Leadership Initiative with Insightful Webinar",
-    description: null,
-    image_url: "/news/leadership-initiative/cover.jpeg",
-    start_date: "2026-02-08T00:00:00.000Z",
-    end_date: null,
-    location: "Virtual (Zoom)",
-    is_published: true,
-    created_at: "2026-02-08T00:00:00.000Z",
-  },
-  {
-    id: "evt-2",
-    title: "SxC Jakarta Empowers Aspiring Entrepreneurs to Build Sustainable Ventures with Preneuries",
-    description: null,
-    image_url: "/news/preneuries/cover.jpeg",
-    start_date: "2026-02-07T00:00:00.000Z",
-    end_date: null,
-    location: "Virtual (Zoom)",
-    is_published: true,
-    created_at: "2026-02-07T00:00:00.000Z",
-  },
-  {
-    id: "evt-3",
-    title: "SxC Jakarta Connects Students with Digital Industry Professionals Through SxDigital",
-    description: null,
-    image_url: "/news/sxdigital/cover.jpeg",
-    start_date: "2026-02-07T00:00:00.000Z",
-    end_date: null,
-    location: "Virtual (Zoom)",
-    is_published: true,
-    created_at: "2026-02-07T00:00:00.000Z",
-  },
-] satisfies DashboardEvent[];
-
 export const metadata: Metadata = {
   title: "Events | StudentsxCEOs Jakarta",
   description: "Join our upcoming events, workshops, and speaker sessions.",
@@ -99,13 +51,7 @@ function EventCard({ event }: { event: DashboardEvent }) {
 }
 
 export default async function EventsPage() {
-  const dashboardEvents = await getEventsList(20);
-  const dashboardIds = new Set(dashboardEvents.map((e) => e.id));
-  // Merge: dashboard first, then static items not already covered by dashboard (match by id)
-  const events = [
-    ...dashboardEvents,
-    ...STATIC_EVENTS.filter((e) => !dashboardIds.has(e.id)),
-  ];
+  const events = await getEventsList(20);
   const [featured, ...rest] = events;
 
   return (
