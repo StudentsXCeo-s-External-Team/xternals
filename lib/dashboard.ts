@@ -1,4 +1,9 @@
-const DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL ?? "https://sxcexternal-dashboard.vercel.app";
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_ANON_KEY!
+);
 
 export type DashboardNews = {
   id: string;
@@ -26,29 +31,6 @@ export type DashboardEvent = {
   created_at: string;
 };
 
-type ApiResponse<T> = {
-  success: boolean;
-  data: T[];
-  pagination?: { page: number; limit: number; total: number; totalPages: number };
-};
-
-async function get<T>(path: string): Promise<T[]> {
-  try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 5000);
-    const res = await fetch(`${DASHBOARD_URL}${path}`, {
-      cache: "no-store",
-      signal: controller.signal,
-    });
-    clearTimeout(timer);
-    if (!res.ok) return [];
-    const json: ApiResponse<T> = await res.json();
-    return json.success ? (json.data ?? []) : [];
-  } catch {
-    return [];
-  }
-}
-
 export function excerptFromContent(content: string, maxLen = 200): string {
   const stripped = content.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
   return stripped.length <= maxLen ? stripped : stripped.slice(0, maxLen).trimEnd() + "…";
@@ -64,14 +46,34 @@ export function formatDate(iso: string | null): string {
 }
 
 export async function getNewsList(limit = 10): Promise<DashboardNews[]> {
-  return get<DashboardNews>(`/api/news?limit=${limit}`);
+  const { data, error } = await supabase
+    .from("news")
+    .select("*")
+    .eq("is_published", true)
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .limit(limit);
+  if (error) return [];
+  return (data as DashboardNews[]) ?? [];
 }
 
 export async function getNewsBySlug(slug: string): Promise<DashboardNews | null> {
-  const items = await get<DashboardNews>(`/api/news?slug=${encodeURIComponent(slug)}`);
-  return items[0] ?? null;
+  const { data, error } = await supabase
+    .from("news")
+    .select("*")
+    .eq("slug", slug)
+    .eq("is_published", true)
+    .single();
+  if (error || !data) return null;
+  return data as DashboardNews;
 }
 
 export async function getEventsList(limit = 20): Promise<DashboardEvent[]> {
-  return get<DashboardEvent>(`/api/events?limit=${limit}`);
+  const { data, error } = await supabase
+    .from("events")
+    .select("*")
+    .eq("is_published", true)
+    .order("start_date", { ascending: false })
+    .limit(limit);
+  if (error) return [];
+  return (data as DashboardEvent[]) ?? [];
 }
