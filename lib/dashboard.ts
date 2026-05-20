@@ -34,10 +34,13 @@ type ApiResponse<T> = {
 
 async function get<T>(path: string): Promise<T[]> {
   try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 5000);
     const res = await fetch(`${DASHBOARD_URL}${path}`, {
-      next: { revalidate: 60 },
-      signal: AbortSignal.timeout(8000),
+      cache: "no-store",
+      signal: controller.signal,
     });
+    clearTimeout(timer);
     if (!res.ok) return [];
     const json: ApiResponse<T> = await res.json();
     return json.success ? (json.data ?? []) : [];
