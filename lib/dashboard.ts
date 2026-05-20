@@ -7,6 +7,7 @@ export type DashboardNews = {
   image_url: string | null;
   author: string | null;
   slug: string;
+  images: string[];
   is_published: boolean;
   published_at: string | null;
   created_at: string;
@@ -20,6 +21,7 @@ export type DashboardEvent = {
   start_date: string;
   end_date: string | null;
   location: string | null;
+  registration_url: string | null;
   is_published: boolean;
   created_at: string;
 };

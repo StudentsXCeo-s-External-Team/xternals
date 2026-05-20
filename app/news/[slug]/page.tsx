@@ -33,7 +33,7 @@ async function resolveNews(slug: string): Promise<UnifiedNews | null> {
       author: remote.author ?? undefined,
       cover: img,
       hero: img,
-      images: [],
+      images: remote.images ?? [],
       excerpt: excerptFromContent(remote.content, 220),
       content: remote.content,
     };

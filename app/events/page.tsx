@@ -46,6 +46,16 @@ function EventCard({ event }: { event: DashboardEvent }) {
         <span className="text-zinc-900">{formatDate(event.start_date)}</span>
         {event.location && <span>{event.location}</span>}
       </div>
+      {event.registration_url && (
+        <a
+          href={event.registration_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 inline-block text-[10px] font-bold uppercase tracking-widest text-blue-600 hover:underline"
+        >
+          Register →
+        </a>
+      )}
     </div>
   );
 }
