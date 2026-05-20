@@ -7,6 +7,8 @@ import { PROGRAMS } from "../data/programs";
 import { sponsors } from "@/data/sponsor";
 import { mediaPartners } from "@/data/mediapartners";
 
+export const dynamic = "force-dynamic";
+
 // ============================================================
 // Page Content Section
 // ============================================================
