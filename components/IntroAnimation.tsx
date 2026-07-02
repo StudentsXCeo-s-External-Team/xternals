@@ -7,7 +7,6 @@ export default function IntroAnimation() {
   const [shouldRender, setShouldRender] = useState(false);
 
   useEffect(() => {
-    // Check if we've already shown the intro in this session
     const hasSeenIntro = sessionStorage.getItem("sxc_intro_seen");
     if (hasSeenIntro) {
       setStage("hidden");
@@ -16,7 +15,6 @@ export default function IntroAnimation() {
 
     setShouldRender(true);
 
-    // Start animation sequence
     const timers = [
       setTimeout(() => setStage("x"), 50),
       setTimeout(() => setStage("expand"), 250),
@@ -46,7 +44,7 @@ export default function IntroAnimation() {
             stage === "expand" || stage === "fadeout" ? "w-[350px] sm:w-[450px] opacity-100" : "w-0 opacity-0"
           }`}
         >
-          <span className="block text-4xl sm:text-6xl font-bold tracking-[0.2em] text-black whitespace-nowrap text-right pr-4">
+          <span className="block text-4xl sm:text-6xl font-bold tracking-[0.2em] text-sxc-navy whitespace-nowrap text-right pr-4">
             STUDENTS
           </span>
         </div>
@@ -57,7 +55,7 @@ export default function IntroAnimation() {
             stage === "init" ? "scale-0 opacity-0 rotate-[-45deg]" : "scale-100 opacity-100 rotate-0"
           }`}
         >
-          <span className="block text-5xl sm:text-7xl font-bold text-blue-600 mx-2">
+          <span className="block text-5xl sm:text-7xl font-bold text-sxc-blue mx-2">
             X
           </span>
         </div>
@@ -68,7 +66,7 @@ export default function IntroAnimation() {
             stage === "expand" || stage === "fadeout" ? "w-[200px] sm:w-[260px] opacity-100" : "w-0 opacity-0"
           }`}
         >
-          <span className="block text-4xl sm:text-6xl font-bold tracking-[0.2em] text-black whitespace-nowrap pl-4">
+          <span className="block text-4xl sm:text-6xl font-bold tracking-[0.2em] text-sxc-navy whitespace-nowrap pl-4">
             CEOs
           </span>
         </div>

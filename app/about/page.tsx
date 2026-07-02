@@ -31,18 +31,26 @@ export default function AboutPage() {
             className="object-cover object-center z-0"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-black/55 z-10" />
+          <div className="absolute inset-0 bg-sxc-navy/65 z-10" />
         </div>
+
+        {/* Figma ornaments */}
+        <Image src="/ornaments/asterisk-navy.png" alt="" aria-hidden="true" width={400} height={400}
+          className="absolute top-[6%] right-[3%] w-40 h-40 sm:w-56 sm:h-56 pointer-events-none select-none opacity-65 z-20"
+          style={{ mixBlendMode: "screen" }} />
+        <Image src="/ornaments/asterisk-purple.png" alt="" aria-hidden="true" width={300} height={300}
+          className="absolute bottom-[15%] left-[3%] w-28 h-28 sm:w-40 sm:h-40 pointer-events-none select-none opacity-40 z-20"
+          style={{ mixBlendMode: "screen" }} />
 
         {/* Content */}
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 z-20">
-          <p className="text-blue-400 tracking-[0.4em] uppercase text-xs sm:text-sm font-semibold">
+          <p className="text-sxc-skyblue-light tracking-[0.15em] uppercase text-xs sm:text-sm font-semibold">
             StudentsxCEOs Jakarta
           </p>
 
           <h1
             id="about-hero"
-            className="text-5xl sm:text-7xl md:text-8xl font-bold tracking-widest text-white uppercase text-center px-4 animate-[fadeInUp_0.9s_ease-out_0.2s_both]"
+            className="text-5xl sm:text-7xl md:text-8xl font-bold tracking-tight text-white uppercase text-center px-4 animate-[fadeInUp_0.9s_ease-out_0.2s_both]"
           >
             About Us
           </h1>
@@ -53,7 +61,7 @@ export default function AboutPage() {
           <span className="text-white text-xs tracking-widest uppercase">
             Scroll
           </span>
-          <div className="w-[1px] h-8 bg-white animate-pulse" />
+          <div className="w-px h-8 bg-white animate-pulse" />
         </div>
       </section>
 
@@ -65,11 +73,11 @@ export default function AboutPage() {
         className="py-16 md:py-20 px-6 md:px-12 max-w-7xl mx-auto text-center"
       >
         <div className="flex items-center justify-center gap-4 mb-10">
-          <span className="text-blue-600 font-bold text-xl">1</span>
-          <div className="h-[1px] w-12 bg-blue-600" />
+          <span className="text-sxc-blue font-bold text-xl">1</span>
+          <div className="h-px w-12 bg-sxc-blue" />
           <span
             id="dna-section"
-            className="text-blue-600 font-bold tracking-widest uppercase text-sm"
+            className="text-sxc-blue font-bold tracking-[0.15em] uppercase text-sm"
           >
             SXC DNA
           </span>
@@ -91,11 +99,11 @@ export default function AboutPage() {
       >
         <div className="text-center mb-8 md:mb-16">
           <div className="flex items-center justify-center gap-4 mb-6">
-            <span className="text-blue-600 font-bold text-xl">2</span>
-            <div className="h-[1px] w-12 bg-blue-600" />
+            <span className="text-sxc-blue font-bold text-xl">2</span>
+            <div className="h-px w-12 bg-sxc-blue" />
             <span
               id="values-section"
-              className="text-blue-600 font-bold tracking-widest uppercase text-sm"
+              className="text-sxc-blue font-bold tracking-[0.15em] uppercase text-sm"
             >
               Our Values
             </span>
@@ -121,28 +129,14 @@ export default function AboutPage() {
         className="w-full flex flex-col md:flex-row min-h-[600px] md:min-h-[80svh]"
       >
         {/* Left: Text */}
-        <div className="w-full md:w-1/2 bg-[#0d0d0d] text-white p-12 sm:p-20 flex flex-col justify-between relative overflow-hidden">
-          {/* Texture */}
-          <div
-            className="absolute inset-0 opacity-5"
-            style={{
-              backgroundImage: `repeating-linear-gradient(
-                45deg,
-                #fff 0px,
-                #fff 1px,
-                transparent 1px,
-                transparent 12px
-              )`,
-            }}
-          />
-
+        <div className="w-full md:w-1/2 bg-sxc-navy text-white p-12 sm:p-20 flex flex-col justify-between relative overflow-hidden">
           {/* Label */}
           <div className="flex items-center gap-4 relative z-10">
-            <span className="text-blue-500 font-bold text-lg">3</span>
-            <div className="h-[1px] w-12 bg-blue-500" />
+            <span className="text-sxc-skyblue font-bold text-lg">3</span>
+            <div className="h-px w-12 bg-sxc-skyblue" />
             <span
               id="history-section"
-              className="text-blue-500 font-bold tracking-widest uppercase text-sm"
+              className="text-sxc-skyblue font-bold tracking-[0.15em] uppercase text-sm"
             >
               History
             </span>
@@ -157,16 +151,16 @@ export default function AboutPage() {
             <p className="text-lg text-zinc-400 leading-relaxed mb-12">
               Our story officially begins in 2010 when the first chapter was
               established, creating a bridge between students and CEOs. It
-              marked the start of a journey to empower future leaders through
+              marked the start of connecting students with leaders through
               direct mentorship and real-world exposure.
             </p>
 
             <Link
               href="/history"
-              className="inline-flex items-center gap-3 text-white font-bold tracking-wider hover:text-blue-400 transition-colors group"
+              className="inline-flex items-center gap-3 text-white font-bold tracking-wider hover:text-sxc-skyblue transition-colors group"
             >
               DISCOVER MORE
-              <div className="w-8 h-8 rounded-full border border-white flex items-center justify-center group-hover:border-blue-400 transition-colors group-hover:translate-x-1">
+              <div className="w-8 h-8 rounded-full border border-white flex items-center justify-center group-hover:border-sxc-skyblue transition-colors group-hover:translate-x-1">
                 <svg
                   className="w-3 h-3"
                   fill="none"

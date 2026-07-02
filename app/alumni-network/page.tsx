@@ -1,6 +1,7 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Metadata } from "next";
-
+import { AlumniVoices } from "@/components/AlumniVoices";
 export const metadata: Metadata = {
   title: "Alumni Network | StudentsxCEOs Jakarta",
   description: "Explore the history of StudentsxCEOs Jakarta alumni by year and cohort.",
@@ -47,18 +48,21 @@ const ALUMNI_HISTORY: AlumniYear[] = [
 export default function AlumniNetworkPage() {
   return (
     <main id="alumni-network" className="relative z-10">
-      <section className="group relative overflow-hidden bg-[#0A1628] text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-blue-500/30 via-transparent to-transparent" />
+      <section className="group relative overflow-hidden bg-sxc-navy text-white">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,var(--tw-gradient-stops))] from-sxc-skyblue/30 via-transparent to-transparent" />
+        <Image src="/ornaments/asterisk-navy.png" alt="" aria-hidden="true" width={400} height={400}
+          className="absolute top-[5%] right-[2%] w-44 h-44 sm:w-60 sm:h-60 pointer-events-none select-none opacity-65"
+          style={{ mixBlendMode: "screen" }} />
         <div className="mx-auto max-w-[1400px] px-6 sm:px-10 py-20 sm:py-28">
           <div className="js-reveal">
-            <span className="text-blue-300 font-bold tracking-widest uppercase text-sm mb-4 block">Community</span>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold leading-tight">
+            <span className="text-sxc-skyblue-light font-bold tracking-[0.15em] uppercase text-sm mb-4 block">Community</span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold leading-tight">
               Alumni Network
             </h1>
             <div className="h-1 w-20 bg-white mt-6 mb-8" />
-            <p className="text-blue-100 text-lg sm:text-xl max-w-2xl leading-relaxed">
-              A continuously growing community of leaders, operators, and builders across industries.
-              Explore the history of our alumni and where their journeys have led.
+            <p className="text-white/70 text-lg sm:text-xl max-w-2xl leading-relaxed">
+              A growing community of professionals working across different industries.
+              Explore our alumni and where they are now.
             </p>
           </div>
         </div>
@@ -68,55 +72,53 @@ export default function AlumniNetworkPage() {
         <div className="mx-auto max-w-[1400px] px-6 sm:px-10">
           <div className="js-reveal">
             <div className="flex items-center gap-4">
-              <div className="h-1 w-10 bg-blue-600" />
+              <div className="h-1 w-10 bg-sxc-skyblue" />
               <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-900">The SxC Alumni Story</h2>
             </div>
             <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="border border-zinc-200 bg-white p-6">
                 <h3 className="text-lg font-bold text-zinc-900">Origins</h3>
                 <p className="mt-3 text-zinc-600">
-                  What began as a bridge between ambitious students and seasoned executives became a community defined by rigor,
-                  mentorship, and shared ambition.
+                  What began as a connection between students and executives grew into a community built on mentorship and genuine drive.
                 </p>
               </div>
               <div className="border border-zinc-200 bg-white p-6">
                 <h3 className="text-lg font-bold text-zinc-900">Momentum</h3>
                 <p className="mt-3 text-zinc-600">
-                  Cohorts learned from founders, operators, and coaches. Projects progressed from case rooms to real clients,
-                  turning frameworks into outcomes.
+                  Members learned from founders and coaches. Projects moved from practice exercises to real client work.
                 </p>
               </div>
               <div className="border border-zinc-200 bg-white p-6">
                 <h3 className="text-lg font-bold text-zinc-900">Legacy</h3>
                 <p className="mt-3 text-zinc-600">
-                  Alumni carry the SxC mindset into companies, ventures, and institutions—expanding the network&apos;s reach and reinforcing its culture.
+                  Alumni take what they learned into their work, keeping the network and its values alive.
                 </p>
               </div>
             </div>
           </div>
 
           <div className="mt-12 js-reveal">
-            <h3 className="text-xl sm:text-2xl font-serif font-bold leading-tight text-zinc-900">Milestones</h3>
+            <h3 className="text-xl sm:text-2xl font-bold leading-tight text-zinc-900">Milestones</h3>
             <div className="mt-6 space-y-6">
               <div className="flex items-start gap-4 border-l-2 border-zinc-200 pl-4">
-                <div className="mt-1 h-2 w-2 bg-blue-600" />
+                <div className="mt-1 h-2 w-2 bg-sxc-skyblue" />
                 <div>
-                  <div className="font-semibold text-zinc-900">2019 — Community Deepening</div>
-                  <div className="text-zinc-600">Mentoring expanded; alumni circles formed across industries and functions.</div>
+                  <div className="font-semibold text-zinc-900">2019: Community Deepening</div>
+                  <div className="text-zinc-600">Mentoring expanded; alumni groups formed across industries and functions.</div>
                 </div>
               </div>
               <div className="flex items-start gap-4 border-l-2 border-zinc-200 pl-4">
-                <div className="mt-1 h-2 w-2 bg-blue-600" />
+                <div className="mt-1 h-2 w-2 bg-sxc-skyblue" />
                 <div>
-                  <div className="font-semibold text-zinc-900">2023 — Practice to Impact</div>
-                  <div className="text-zinc-600">Live projects and competitions matured into client-facing outcomes.</div>
+                  <div className="font-semibold text-zinc-900">2023: Practice to Impact</div>
+                  <div className="text-zinc-600">Live projects and competitions moved into real client work.</div>
                 </div>
               </div>
               <div className="flex items-start gap-4 border-l-2 border-zinc-200 pl-4">
-                <div className="mt-1 h-2 w-2 bg-blue-600" />
+                <div className="mt-1 h-2 w-2 bg-sxc-skyblue" />
                 <div>
-                  <div className="font-semibold text-zinc-900">2025 — Network at Scale</div>
-                  <div className="text-zinc-600">Alumni chapters grew; collaboration now spans companies, cities, and disciplines.</div>
+                  <div className="font-semibold text-zinc-900">2025: Network at Scale</div>
+                  <div className="text-zinc-600">Alumni groups grew; collaboration now spans companies, cities, and fields.</div>
                 </div>
               </div>
             </div>
@@ -127,7 +129,7 @@ export default function AlumniNetworkPage() {
       <section className="relative z-10 w-full bg-white py-16 sm:py-20">
         <div className="mx-auto max-w-[1400px] px-6 sm:px-10">
           <div className="flex items-center gap-4 js-reveal">
-            <div className="h-1 w-10 bg-blue-600" />
+            <div className="h-1 w-10 bg-sxc-skyblue" />
             <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-900">History by Year</h2>
           </div>
 
@@ -141,10 +143,10 @@ export default function AlumniNetworkPage() {
               return (
                 <div key={batch.year} className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-20 items-center js-reveal">
                   <div className={imageCol}>
-                    <div className="aspect-[4/3] overflow-hidden relative border border-zinc-200 bg-blue-900/10">
-                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-600/30 via-transparent to-transparent" />
+                    <div className="aspect-4/3 overflow-hidden relative border border-zinc-200 bg-sxc-navy/8">
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] from-sxc-skyblue/30 via-transparent to-transparent" />
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-blue-900 text-2xl font-bold">
+                        <div className="h-20 w-20 sm:h-24 sm:w-24 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-sxc-navy text-2xl font-bold">
                           {initials}
                         </div>
                       </div>
@@ -152,10 +154,10 @@ export default function AlumniNetworkPage() {
                   </div>
                   <div className={textCol}>
                     <div className="border border-zinc-200 bg-white p-6 sm:p-8">
-                      <span className="text-blue-600 font-bold tracking-widest uppercase text-xs sm:text-sm mb-3 block">
+                      <span className="text-sxc-blue font-bold tracking-[0.15em] uppercase text-xs sm:text-sm mb-3 block">
                         {batch.people.length} Alumni
                       </span>
-                      <h3 className="text-3xl sm:text-4xl font-serif font-bold leading-tight text-zinc-900">
+                      <h3 className="text-3xl sm:text-4xl font-display font-bold leading-tight text-zinc-900">
                         Cohort {batch.year}
                       </h3>
                       <p className="mt-4 text-zinc-600 text-base sm:text-lg">
@@ -164,10 +166,10 @@ export default function AlumniNetworkPage() {
                       <ul className="mt-4 space-y-2 text-zinc-700">
                         {batch.people.map((p) => (
                           <li key={`${batch.year}-${p.name}`} className="flex items-start gap-3">
-                            <span className="mt-2 h-2 w-2 rounded-full bg-blue-600" />
+                            <span className="mt-2 h-2 w-2 rounded-full bg-sxc-skyblue" />
                             <span>
                               <span className="font-semibold text-zinc-900">{p.name}</span>{" "}
-                              <span className="text-zinc-600">— {p.role}, {p.org}</span>
+                              <span className="text-zinc-600">, {p.role} at {p.org}</span>
                             </span>
                           </li>
                         ))}
@@ -185,54 +187,41 @@ export default function AlumniNetworkPage() {
         <div className="mx-auto max-w-[1200px] px-6 sm:px-10">
           <div className="js-reveal">
             <div className="flex items-center gap-4">
-              <div className="h-1 w-10 bg-blue-600" />
+              <div className="h-1 w-10 bg-sxc-skyblue" />
               <h3 className="text-2xl font-extrabold text-zinc-900">Alumni Voices</h3>
             </div>
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="border border-zinc-200 bg-white p-6">
-                <p className="text-zinc-700">
-                  “The discipline here translated directly into professional confidence.”
-                </p>
-                <div className="mt-3 text-sm text-zinc-500">Alya R.</div>
-              </div>
-              <div className="border border-zinc-200 bg-white p-6">
-                <p className="text-zinc-700">
-                  “Mentors didn&apos;t just advise. They opened doors and raised the bar.”
-                </p>
-                <div className="mt-3 text-sm text-zinc-500">Jonathan L.</div>
-              </div>
-              <div className="border border-zinc-200 bg-white p-6">
-                <p className="text-zinc-700">
-                  “Community is the advantage—you keep growing alongside people who care.”
-                </p>
-                <div className="mt-3 text-sm text-zinc-500">Nadia K.</div>
-              </div>
-            </div>
+            <AlumniVoices />
           </div>
         </div>
       </section>
 
-      <section className="relative z-10 w-full bg-zinc-50 border-t border-zinc-200 py-14 sm:py-20">
-        <div className="mx-auto max-w-[1200px] px-6 sm:px-10">
+      <section className="relative z-10 w-full bg-sxc-navy border-t border-white/10 py-14 sm:py-20 overflow-hidden">
+        <Image src="/ornaments/asterisk-navy.png" alt="" aria-hidden="true" width={350} height={350}
+          className="absolute top-[5%] right-[2%] w-36 h-36 sm:w-52 sm:h-52 pointer-events-none select-none opacity-60"
+          style={{ mixBlendMode: "screen" }} />
+        <Image src="/ornaments/ring-gold-1.png" alt="" aria-hidden="true" width={160} height={160}
+          className="absolute bottom-[10%] left-[3%] w-14 h-14 sm:w-20 sm:h-20 pointer-events-none select-none opacity-30"
+          style={{ mixBlendMode: "screen" }} />
+        <div className="mx-auto max-w-[1200px] px-6 sm:px-10 relative z-10">
           <div className="text-center js-reveal">
             <div className="flex justify-center">
-              <div className="h-1 w-16 bg-blue-600 mb-4" />
+              <div className="h-1 w-16 bg-sxc-skyblue mb-4" />
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-zinc-900">Be Part of the Story</h2>
-            <p className="mt-3 text-sm sm:text-base text-zinc-600 max-w-2xl mx-auto">
-              Want to connect with alumni or share your journey? Reach out and we’ll help you plug into the network.
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white">Be Part of the Story</h2>
+            <p className="mt-3 text-sm sm:text-base text-zinc-400 max-w-2xl mx-auto">
+              Want to connect with alumni or share your journey? Reach out and we'll help you plug into the network.
             </p>
             <div className="mt-8 flex items-center justify-center gap-4">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 transition-colors text-white font-semibold px-7 py-3 rounded-md"
+                className="inline-flex items-center gap-2 bg-white hover:bg-sxc-yellow transition-colors text-sxc-navy font-semibold px-7 py-3"
               >
                 Contact Us
                 <span className="text-sm">→</span>
               </Link>
               <Link
                 href="/join-us"
-                className="inline-flex items-center gap-2 border border-blue-600 text-blue-600 hover:bg-blue-50 transition-colors font-semibold px-7 py-3 rounded-md"
+                className="inline-flex items-center gap-2 border border-white/30 text-white hover:border-white/70 transition-colors font-semibold px-7 py-3"
               >
                 Join Us
                 <span className="text-sm">→</span>

@@ -50,21 +50,21 @@ export default function Header() {
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 w-full border-b border-black/10 bg-white ${isShrunk ? "shadow-sm" : ""}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 w-full border-b border-zinc-200 bg-white ${isShrunk ? "shadow-sm" : ""}`}>
       <nav className="mx-auto max-w-[1700px] px-6 sm:px-10">
         <div className={`items-center flex justify-between lg:grid lg:grid-cols-3 ${isShrunk ? "h-12 sm:h-16" : "h-16 sm:h-20"} transition-[height] duration-200`}>
 
           {/* Logo */}
           <div className="flex items-center justify-start">
-            <Link href="/" className="group flex-shrink-0">
+            <Link href="/" className="group shrink-0">
               <div className="leading-tight">
-                <div className={`${isShrunk ? "text-base sm:text-lg" : "text-lg sm:text-xl"} font-bold tracking-[0.28em] text-black transition-[font-size] duration-200`}>
+                <div className={`${isShrunk ? "text-base sm:text-lg" : "text-lg sm:text-xl"} font-bold tracking-[0.28em] text-sxc-navy transition-[font-size] duration-200`}>
                   <span className="tracking-[0.28em]">STUDENTS</span>
                   <span className="mx-1 text-[0.75em] font-semibold tracking-normal align-baseline">x</span>
                   <span className="tracking-[0.28em]">CEO</span>
                   <span className="text-[0.75em] font-semibold tracking-normal align-baseline">S</span>
                 </div>
-                <div className={`${isShrunk ? "text-xs sm:text-sm" : "text-sm sm:text-base"} font-semibold tracking-wider text-blue-600 transition-[font-size] duration-200`}>
+                <div className={`${isShrunk ? "text-xs sm:text-sm" : "text-sm sm:text-base"} font-semibold tracking-wider text-sxc-blue transition-[font-size] duration-200`}>
                   Jakarta
                 </div>
               </div>
@@ -78,7 +78,7 @@ export default function Header() {
                 {item.dropdown ? (
                   <div className="flex items-center">
                     {item.href ? (
-                      <Link href={item.href} className="transition-colors duration-300 ease-out hover:text-blue-600 py-2 uppercase whitespace-nowrap">
+                      <Link href={item.href} className="transition-colors duration-300 ease-out hover:text-sxc-blue py-2 uppercase whitespace-nowrap">
                         {item.label}
                       </Link>
                     ) : (
@@ -86,14 +86,14 @@ export default function Header() {
                         {item.label}
                       </span>
                     )}
-                    <button className="flex items-center justify-center p-1 transition-colors duration-300 ease-out hover:text-blue-600 cursor-pointer outline-none ml-0.5">
+                    <button className="flex items-center justify-center p-1 transition-colors duration-300 ease-out hover:text-sxc-blue cursor-pointer outline-none ml-0.5">
                       <svg className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                       </svg>
                     </button>
                   </div>
                 ) : (
-                  <Link href={item.href!} className="transition-colors duration-300 ease-out hover:text-blue-600 py-2 block uppercase whitespace-nowrap">
+                  <Link href={item.href!} className="transition-colors duration-300 ease-out hover:text-sxc-blue py-2 block uppercase whitespace-nowrap">
                     {item.label}
                   </Link>
                 )}
@@ -105,16 +105,15 @@ export default function Header() {
                         <Link
                           key={sub.label}
                           href={sub.href}
-                          className="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-zinc-700 hover:bg-blue-50 hover:text-blue-600 transition-colors group/sub"
+                          className="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-zinc-700 hover:bg-sxc-skyblue/10 hover:text-sxc-blue transition-colors group/sub"
                         >
-                          <span className="text-[10px] text-zinc-300 font-black group-hover/sub:text-blue-400 transition-colors">
+                          <span className="text-[10px] text-zinc-300 font-black group-hover/sub:text-sxc-blue transition-colors">
                             0{i + 1}
                           </span>
                           {sub.label}
                         </Link>
                       ))}
-                      {/* Blue bottom bar */}
-                      <div className="h-[2px] bg-blue-600 mt-1" />
+                      <div className="h-0.5 bg-sxc-skyblue mt-1" />
                     </div>
                   </div>
                 )}
@@ -150,7 +149,7 @@ export default function Header() {
                     <div>
                       <button
                         onClick={() => toggleMobileExpand(item.label)}
-                        className="flex w-full items-center justify-between px-4 py-3 text-sm font-bold text-zinc-800 hover:text-blue-600 hover:bg-zinc-50 uppercase"
+                        className="flex w-full items-center justify-between px-4 py-3 text-sm font-bold text-zinc-800 hover:text-sxc-blue hover:bg-zinc-50 uppercase"
                       >
                         {item.label}
                         <svg className={`w-4 h-4 transition-transform duration-200 ${mobileExpanded === item.label ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -158,12 +157,12 @@ export default function Header() {
                         </svg>
                       </button>
                       {mobileExpanded === item.label && (
-                        <div className="bg-zinc-50 border-l-2 border-blue-600 ml-4 py-2">
+                        <div className="bg-zinc-50 border-l-2 border-sxc-skyblue ml-4 py-2">
                           {item.dropdown.map((sub, i) => (
                             <Link
                               key={sub.label}
                               href={sub.href}
-                              className="flex items-center gap-3 px-6 py-2 text-sm text-zinc-600 hover:text-blue-600"
+                              className="flex items-center gap-3 px-6 py-2 text-sm text-zinc-600 hover:text-sxc-blue"
                               onClick={() => setIsMobileMenuOpen(false)}
                             >
                               <span className="text-[10px] text-zinc-300 font-black">0{i + 1}</span>
@@ -176,7 +175,7 @@ export default function Header() {
                   ) : (
                     <Link
                       href={item.href!}
-                      className="block px-4 py-3 text-sm font-bold text-zinc-800 hover:text-blue-600 hover:bg-zinc-50 uppercase"
+                      className="block px-4 py-3 text-sm font-bold text-zinc-800 hover:text-sxc-blue hover:bg-zinc-50 uppercase"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {item.label}

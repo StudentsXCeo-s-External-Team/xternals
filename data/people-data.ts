@@ -82,9 +82,9 @@ export const MANAGEMENT: PersonCardProps[] = [
     variant: "management",
   },
   {
-    name: "Mochammad Daffa Rallibi",
+    name: "Darmanto",
     role: "Manager of Learning & Development",
-    imageSrc: "/boards/MLD.jpeg",
+    imageSrc: "/boards/darma.jpg",
     variant: "management",
   },
   {
@@ -206,11 +206,6 @@ export const BOARD_MEMBERS: BoardMemberProps[] = [
     variant: "Human Resources",
   },
   {
-    name: "Darmanto",
-    role: "Learning & Development",
-    variant: "Human Resources",
-  },
-  {
     name: "Naurah Arista Putri",
     role: "Learning & Development",
     variant: "Human Resources",
@@ -218,7 +213,7 @@ export const BOARD_MEMBERS: BoardMemberProps[] = [
 
   // Employer Branding
   {
-    name: "Ammara Dyra Nafisa – Ammara",
+    name: "Ammara Dyra Nafisa",
     role: "Employer Branding",
     variant: "Human Resources",
   },
@@ -228,7 +223,7 @@ export const BOARD_MEMBERS: BoardMemberProps[] = [
     variant: "Human Resources",
   },
   {
-    name: "Mardiana Suhrul Romdoni – Dian",
+    name: "Mardiana Suhrul Romdoni",
     role: "Employer Branding",
     variant: "Human Resources",
   },

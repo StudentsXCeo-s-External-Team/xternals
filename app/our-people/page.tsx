@@ -12,6 +12,7 @@
 // ─────────────────────────────────────────────────────────────────
 
 import { Metadata } from "next";
+import Image from "next/image";
 import { PersonCard, BoardMemberCard } from "@/components/PersonCard";
 import { MANAGEMENT, BOARD_MEMBERS } from "@/data/people-data";
 
@@ -23,9 +24,9 @@ export const metadata: Metadata = {
 function SectionLabel({ number, label }: { number: number; label: string }) {
   return (
     <div className="flex items-center gap-4 mb-6">
-      <span className="text-blue-600 font-bold text-xl">{number}</span>
-      <div className="h-[1px] w-12 bg-blue-600" />
-      <span className="text-blue-600 font-bold tracking-widest uppercase text-sm">
+      <span className="text-sxc-blue font-bold text-xl">{number}</span>
+      <div className="h-px w-12 bg-sxc-blue" />
+      <span className="text-sxc-blue font-bold tracking-[0.15em] uppercase text-sm">
         {label}
       </span>
     </div>
@@ -39,27 +40,22 @@ export default function OurPeoplePage() {
       {/* ══════════════════════════════════════════
           HERO — minimal dark banner, consistent with About
           ══════════════════════════════════════════ */}
-      <section className="relative bg-[#0d0d0d] pt-40 pb-24 px-6 sm:px-12 overflow-hidden">
-        {/* Subtle diagonal texture */}
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: `repeating-linear-gradient(
-              45deg,
-              #fff 0px, #fff 1px,
-              transparent 1px, transparent 12px
-            )`,
-          }}
-        />
+      <section className="relative bg-sxc-navy pt-40 pb-24 px-6 sm:px-12 overflow-hidden">
+        <Image src="/ornaments/asterisk-navy.png" alt="" aria-hidden="true" width={400} height={400}
+          className="absolute top-[5%] right-[2%] w-44 h-44 sm:w-60 sm:h-60 pointer-events-none select-none opacity-65"
+          style={{ mixBlendMode: "screen" }} />
+        <Image src="/ornaments/orb-gold-1.png" alt="" aria-hidden="true" width={160} height={160}
+          className="absolute bottom-[10%] right-[10%] w-12 h-12 sm:w-16 sm:h-16 pointer-events-none select-none opacity-40"
+          style={{ mixBlendMode: "screen" }} />
         <div className="max-w-[1400px] mx-auto relative z-10">
-          <p className="text-blue-500 tracking-[0.4em] uppercase text-xs sm:text-sm font-semibold mb-4">
+          <p className="text-sxc-skyblue tracking-[0.15em] uppercase text-xs sm:text-sm font-semibold mb-4">
             StudentsxCEOs Jakarta
           </p>
           <h1 className="text-5xl sm:text-7xl md:text-8xl font-bold tracking-tight text-white uppercase">
             Our People
           </h1>
           <p className="mt-6 text-zinc-400 text-lg max-w-xl leading-relaxed">
-            The individuals who drive our mission — leaders, innovators, and changemakers shaping the future.
+            The people behind our mission: leading, building, and making things happen.
           </p>
         </div>
       </section>
@@ -78,7 +74,7 @@ export default function OurPeoplePage() {
           {(() => {
             const EXEC_TOP = [
               { name: "Andhika Pratama", role: "Controller", imageSrc: "/boards/controller.jpg", variant: "management" as const, className: "order-2 md:order-none" },
-              { name: "Nicholas Audric Adonis Mathew", role: "Chief Executive Officer", imageSrc: "/boards/ceo.jpg", variant: "management" as const, className: "order-1 md:order-none" },
+              { name: "Nicholas Audric Adonis Mathew", role: "Chief Executive Officer", imageSrc: "/boards/ceo.jpg", variant: "management" as const, className: "order-1 md:order-none md:-translate-y-10" },
               { name: "Alisya Mutiara Arsyisi", role: "General Secretary", imageSrc: "/boards/gensec.png", variant: "management" as const, className: "order-3 md:order-none" },
             ];
 

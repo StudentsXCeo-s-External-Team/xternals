@@ -115,12 +115,6 @@ export const associates = [
     team: "Learning and Development"
   },
   {
-    id: "lnd-hr-darmanto",
-    name: "Darmanto",
-    division: "Human Resources",
-    team: "Learning and Development"
-  },
-  {
     id: "lnd-hr-naurah-arista-putri",
     name: "Naurah Arista Putri",
     division: "Human Resources",
@@ -130,7 +124,7 @@ export const associates = [
   // Human Resources – Employer Branding
   {
     id: "eb-hr-ammara-dyra-nafisa",
-    name: "Ammara Dyra Nafisa – Ammara",
+    name: "Ammara Dyra Nafisa",
     division: "Human Resources",
     team: "Employer Branding"
   },
@@ -142,7 +136,7 @@ export const associates = [
   },
   {
     id: "eb-hr-mardiana-suhrul-romdoni",
-    name: "Mardiana Suhrul Romdoni – Dian",
+    name: "Mardiana Suhrul Romdoni",
     division: "Human Resources",
     team: "Employer Branding"
   },

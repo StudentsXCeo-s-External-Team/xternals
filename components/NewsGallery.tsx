@@ -20,7 +20,7 @@ export default function NewsGallery({ images, title }: Props) {
     <div className="mt-14">
       {/* Section label */}
       <div className="flex items-center gap-3 mb-6">
-        <div className="h-1 w-10 bg-blue-600" />
+        <div className="h-1 w-10 bg-sxc-skyblue" />
         <span className="text-xs font-semibold tracking-widest text-zinc-400 uppercase">Gallery</span>
         <span className="ml-auto text-xs text-zinc-400 tabular-nums">
           {current + 1} / {images.length}
@@ -28,7 +28,7 @@ export default function NewsGallery({ images, title }: Props) {
       </div>
 
       {/* Main image viewer */}
-      <div className="relative w-full aspect-[16/9] overflow-hidden rounded-xl bg-zinc-100">
+      <div className="relative w-full aspect-video overflow-hidden rounded-xl bg-zinc-100">
         <Image
           key={current}
           src={images[current]}
@@ -37,10 +37,8 @@ export default function NewsGallery({ images, title }: Props) {
           className="object-cover transition-opacity duration-300"
         />
 
-        {/* Only show arrows if more than 1 image */}
         {images.length > 1 && (
           <>
-            {/* Left arrow */}
             <button
               onClick={prev}
               aria-label="Previous image"
@@ -50,8 +48,6 @@ export default function NewsGallery({ images, title }: Props) {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
               </svg>
             </button>
-
-            {/* Right arrow */}
             <button
               onClick={next}
               aria-label="Next image"
@@ -64,7 +60,6 @@ export default function NewsGallery({ images, title }: Props) {
           </>
         )}
 
-        {/* Dot indicators */}
         {images.length > 1 && (
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10">
             {images.map((_, i) => (
@@ -74,7 +69,7 @@ export default function NewsGallery({ images, title }: Props) {
                 aria-label={`Go to image ${i + 1}`}
                 className={`rounded-full transition-all duration-300 ${
                   i === current
-                    ? "w-5 h-2 bg-blue-600"
+                    ? "w-5 h-2 bg-sxc-skyblue"
                     : "w-2 h-2 bg-white/60 hover:bg-white/90"
                 }`}
               />
@@ -83,7 +78,6 @@ export default function NewsGallery({ images, title }: Props) {
         )}
       </div>
 
-      {/* Thumbnail strip — only if more than 2 images */}
       {images.length > 2 && (
         <div className="mt-3 flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
           {images.map((src, i) => (
@@ -91,9 +85,9 @@ export default function NewsGallery({ images, title }: Props) {
               key={i}
               onClick={() => setCurrent(i)}
               aria-label={`View image ${i + 1}`}
-              className={`relative flex-shrink-0 w-20 h-14 rounded-lg overflow-hidden transition-all duration-200 ${
+              className={`relative shrink-0 w-20 h-14 rounded-lg overflow-hidden transition-all duration-200 ${
                 i === current
-                  ? "ring-2 ring-blue-600 ring-offset-1 opacity-100"
+                  ? "ring-2 ring-sxc-skyblue ring-offset-1 opacity-100"
                   : "opacity-50 hover:opacity-80"
               }`}
             >

@@ -1,45 +1,80 @@
 @import "tailwindcss";
 
+@theme inline {
+  /* ── Brand palette (Source: Brand Guidelines SxC Batch 14) ── */
+  --color-sxc-navy:          #07224F;   /* primary dark navy — headings, dark backgrounds */
+  --color-sxc-eggplant:      #1B0A40;   /* deep purple — darkest dramatic backgrounds */
+  --color-sxc-indigo:        #24277B;   /* blue-purple secondary */
+  --color-sxc-blue:          #2061E3;   /* royal blue — primary interactive / CTAs on white */
+  --color-sxc-skyblue:       #00ADF1;   /* brand primary cyan — accents, dark-bg labels */
+  --color-sxc-skyblue-light: #8ECAE6;   /* light sky blue */
+  --color-sxc-yellow:        #F4CC0A;   /* brand primary yellow */
+  --color-sxc-steel:         #1E517D;   /* steel teal — mid-range blue */
+  --color-sxc-dark:          #0F1266;   /* darkest navy-indigo */
+  --color-sxc-purple:        #5942C8;   /* purple accent */
+  --color-sxc-white:         #FFFFFF;
+
+  /* ── Typography ── */
+  --font-display: "Neue Haas Grotesk Display Pro", "Arial Black", system-ui, sans-serif;
+  --font-sans:    "Neue Haas Grotesk Text Pro", system-ui, sans-serif;
+
+  /* ── Border radius ── */
+  --radius-sm:  2px;
+  --radius-md:  4px;
+  --radius-lg:  8px;
+  --radius-xl:  12px;
+
+  /* ── Shadows ── */
+  --shadow-card: 0 2px 16px 0 rgba(7, 34, 79, 0.18);
+  --shadow-btn:  0 2px 8px  0 rgba(0, 173, 241, 0.25);
+}
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #07224F;
+
+  /* ── Gradient presets (brand palette) ── */
+  --gradient-sxc-1:  linear-gradient(135deg, #07224F 0%, #1B0A40 100%);     /* navy → deep purple */
+  --gradient-sxc-2:  linear-gradient(135deg, #07224F 0%, #2061E3 100%);     /* navy → royal blue */
+  --gradient-sxc-3:  linear-gradient(135deg, #00ADF1 0%, #07224F 100%);     /* cyan → navy */
+  --gradient-sxc-4:  radial-gradient(ellipse at 30% 30%, #2061E3 0%, #07224F 65%); /* royal blue radial */
+  --gradient-sxc-5:  linear-gradient(135deg, #2061E3 0%, #00ADF1 55%, #8ECAE6 100%); /* blue → cyan → light */
+  --gradient-sxc-6:  linear-gradient(135deg, #F4CC0A 0%, #E5A800 100%);     /* yellow gold */
+  --gradient-sxc-7:  linear-gradient(135deg, #24277B 0%, #07224F 100%);     /* indigo → navy */
+  --gradient-sxc-8:  linear-gradient(135deg, #1B0A40 0%, #07224F 100%);     /* deep purple → navy */
+  --gradient-sxc-9:  linear-gradient(135deg, #8ECAE6 0%, #00ADF1 100%);     /* light → cyan */
+  --gradient-sxc-10: linear-gradient(135deg, #07224F 0%, #24277B 35%, #2061E3 70%, #00ADF1 100%); /* full brand gradient */
 }
+
+/* ── Scroll reveal ── */
 .js-reveal[data-revealed="true"] {
   opacity: 1;
   transform: translateY(0);
 }
 
-
-/* Animated gradient text for hero 'x' */
+/* ── Hero × glyph pulse ── */
 .live-x {
-  background-image: linear-gradient(90deg, #22d3ee, #1e40af, #60a5fa, #22d3ee);
+  background-image: linear-gradient(90deg, #8ECAE6, #00ADF1, #2061E3, #8ECAE6);
   background-size: 300% 300%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   animation: gradientShiftX 5s ease-in-out infinite;
-  filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.35));
+  filter: drop-shadow(0 0 6px rgba(0, 173, 241, 0.35));
 }
 
 @keyframes gradientShiftX {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
 }
 
+/* ── Animated bg (programs hero) ── */
 @keyframes gradientShift {
-  0% {
-    background: radial-gradient(120% 120% at 20% 20%, #0ea5e9 0%, #1d4ed8 45%, #0b1020 90%);
-  }
-  50% {
-    background: radial-gradient(120% 120% at 80% 60%, #22d3ee 0%, #1e40af 50%, #0b1020 95%);
-  }
-  100% {
-    background: radial-gradient(120% 120% at 20% 20%, #0ea5e9 0%, #1d4ed8 45%, #0b1020 90%);
-  }
+  0%   { background: radial-gradient(120% 120% at 20% 20%, #00ADF1 0%, #2061E3 45%, #07224F 90%); }
+  50%  { background: radial-gradient(120% 120% at 80% 60%, #8ECAE6 0%, #2061E3 50%, #07224F 95%); }
+  100% { background: radial-gradient(120% 120% at 20% 20%, #00ADF1 0%, #2061E3 45%, #07224F 90%); }
 }
-
-/* Programs section gradient to match site theme */
 
 .blue-live-bg {
   position: absolute;
@@ -49,23 +84,27 @@
   will-change: background;
 }
 
-/* Partners logos marquee (moves to the right) */
+/* ── Partners marquee ── */
 .logo-marquee {
   animation: marqueeRight 40s linear infinite;
   will-change: transform;
 }
 @keyframes marqueeRight {
-  0% { transform: translateX(-50%); }
+  0%   { transform: translateX(-50%); }
   100% { transform: translateX(0%); }
 }
 
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heroProgress {
+  from { width: 0%; }
+  to   { width: 100%; }
 }

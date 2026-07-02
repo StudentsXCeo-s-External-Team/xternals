@@ -3,6 +3,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const OTHER_PAGES = [
   { label: "Volunteer", href: "/join-us/volunteer", num: "02" },
@@ -26,40 +27,45 @@ export default function CommunityPage() {
     <main className="min-h-screen font-sans overflow-x-hidden">
 
       {/* ── HERO ── */}
-      <section className="relative h-screen w-full bg-[#0d0d0d] flex flex-col justify-end pb-28 px-6 sm:px-16 overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.045]" style={{ backgroundImage: `repeating-linear-gradient(45deg,#fff 0px,#fff 1px,transparent 1px,transparent 14px)` }} />
+      <section className="relative h-screen w-full bg-sxc-navy flex flex-col justify-end pb-28 px-6 sm:px-16 overflow-hidden">
         <span ref={ghostRef} className="absolute right-[-2vw] top-1/2 text-[24vw] font-black leading-none select-none pointer-events-none" style={{ color: "rgba(255,255,255,0.025)", transition: "transform 0.05s linear" }}>
           SXC
         </span>
-        <div className="absolute top-0 left-0 w-[3px] h-full bg-blue-600" />
+        <div className="absolute top-0 left-0 w-[3px] h-full bg-sxc-skyblue" />
+        <Image src="/ornaments/asterisk-navy.png" alt="" aria-hidden="true" width={400} height={400}
+          className="absolute top-[5%] right-[18%] w-40 h-40 sm:w-56 sm:h-56 pointer-events-none select-none opacity-65"
+          style={{ mixBlendMode: "screen" }} />
+        <Image src="/ornaments/ring-gold-1.png" alt="" aria-hidden="true" width={160} height={160}
+          className="absolute bottom-[25%] right-[4%] w-16 h-16 sm:w-24 sm:h-24 pointer-events-none select-none opacity-30"
+          style={{ mixBlendMode: "screen" }} />
 
         <div className="relative z-10 max-w-[1400px] mx-auto w-full">
           {/* Breadcrumb */}
           <div className="flex items-center gap-3 mb-8">
-            <Link href="/join-us" className="text-zinc-600 text-xs tracking-widest uppercase hover:text-blue-400 transition-colors">Join Us</Link>
+            <Link href="/join-us" className="text-zinc-600 text-xs tracking-widest uppercase hover:text-sxc-skyblue-light transition-colors">Join Us</Link>
             <span className="text-zinc-700 text-xs">/</span>
-            <span className="text-blue-400 text-xs tracking-widest uppercase font-bold">Community</span>
+            <span className="text-sxc-skyblue-light text-xs tracking-widest uppercase font-bold">Community</span>
           </div>
 
-          <p className="text-blue-500 tracking-[0.5em] uppercase text-xs font-semibold mb-4">01 — Membership</p>
+          <p className="text-sxc-skyblue tracking-[0.15em] uppercase text-xs font-semibold mb-4">01 — Membership</p>
           <h1 className="text-[13vw] sm:text-[10vw] md:text-[8vw] font-black text-white uppercase leading-[0.88] tracking-tight mb-10">
             Join Our<br />
-            <span className="text-transparent" style={{ WebkitTextStroke: "2px #2563eb" }}>Community.</span>
+            <span className="text-transparent" style={{ WebkitTextStroke: "2px var(--color-sxc-skyblue)" }}>Community.</span>
           </h1>
           <p className="text-zinc-400 text-lg max-w-md leading-relaxed">
-            Become a member of a network built on ambition, leadership, and the belief that tomorrow's CEOs are in university today.
+            Join a community that believes the next generation of leaders is already in university today.
           </p>
         </div>
 
         {/* Scroll */}
         <div className="absolute bottom-10 right-14 flex flex-col items-center gap-2 opacity-30">
-          <div className="w-[1px] h-14 bg-white animate-pulse" />
+          <div className="w-px h-14 bg-white animate-pulse" />
           <span className="text-white text-[9px] tracking-[0.3em] uppercase" style={{ writingMode: "vertical-rl" }}>scroll</span>
         </div>
 
         {/* Wave transition */}
         <div className="absolute bottom-0 left-0 w-full z-20" style={{ height: "180px" }}>
-          <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 0%, rgba(13,13,13,0.7) 40%, #ffffff 100%)" }} />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 0%, rgba(12,15,30,0.7) 40%, #ffffff 100%)" }} />
           <svg className="absolute bottom-0 left-0 w-full" viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ height: "80px" }}>
             <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,10 1440,40 L1440,80 L0,80 Z" fill="#ffffff" />
           </svg>
@@ -73,11 +79,11 @@ export default function CommunityPage() {
         <div className="relative w-full lg:w-[55%] bg-white flex flex-col justify-center px-8 sm:px-16 py-24 lg:py-32">
           <span className="absolute top-8 left-4 text-[20vw] lg:text-[13vw] font-black text-zinc-100 leading-none select-none pointer-events-none">01</span>
           <div className="relative z-10 max-w-lg">
-            <p className="text-blue-600 tracking-[0.4em] uppercase text-xs font-bold mb-6">Membership</p>
+            <p className="text-sxc-blue tracking-[0.15em] uppercase text-xs font-bold mb-6">Membership</p>
             <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black uppercase leading-[0.9] tracking-tight text-zinc-900 mb-8">
               Become<br />a Member
             </h2>
-            <div className="h-[3px] w-16 bg-blue-600 mb-8" />
+            <div className="h-[3px] w-16 bg-sxc-skyblue mb-8" />
             <p className="text-zinc-500 text-lg leading-relaxed mb-12">
               Join a network of ambitious students and future leaders. Gain exclusive access to events, mentorship programs, and a community that relentlessly pushes you forward.
             </p>
@@ -95,7 +101,7 @@ export default function CommunityPage() {
             <button
               type="button"
               onClick={() => setShowClosed(true)}
-              className="inline-flex items-center gap-4 bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-4 transition-colors duration-300 uppercase text-sm tracking-wider"
+              className="inline-flex items-center gap-4 bg-sxc-blue hover:bg-sxc-navy text-white font-bold px-8 py-4 transition-colors duration-300 uppercase text-sm tracking-[0.15em]"
             >
               Apply Now
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -111,11 +117,11 @@ export default function CommunityPage() {
         </div>
 
         {/* Right: dark benefits */}
-        <div className="w-full lg:w-[45%] bg-[#0d0d0d] flex flex-col justify-center px-8 sm:px-16 py-24 relative overflow-hidden">
+        <div className="w-full lg:w-[45%] bg-sxc-navy flex flex-col justify-center px-8 sm:px-16 py-24 relative overflow-hidden">
           <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: `repeating-linear-gradient(45deg,#fff 0px,#fff 1px,transparent 1px,transparent 14px)` }} />
-          <div className="absolute bottom-0 left-0 w-full h-[3px] bg-blue-600" />
+          <div className="absolute bottom-0 left-0 w-full h-[3px] bg-sxc-skyblue" />
           <div className="relative z-10">
-            <p className="text-blue-400 text-xs tracking-widest uppercase font-semibold mb-10">Why join?</p>
+            <p className="text-sxc-skyblue-light text-xs tracking-widest uppercase font-semibold mb-10">Why join?</p>
             <ul className="space-y-8">
               {[
                 ["Priority Access","First in line for flagship events, workshops, and exclusive SxC experiences."],
@@ -124,7 +130,7 @@ export default function CommunityPage() {
                 ["Mentorship","One-on-one guidance from professionals who've been where you want to go."],
               ].map(([title, desc]) => (
                 <li key={title} className="flex gap-5">
-                  <span className="text-blue-600 font-black text-lg mt-0.5 shrink-0">✓</span>
+                  <span className="text-sxc-skyblue font-black text-lg mt-0.5 shrink-0">✓</span>
                   <div>
                     <p className="text-white font-bold mb-1">{title}</p>
                     <p className="text-zinc-500 text-sm leading-relaxed">{desc}</p>
@@ -139,15 +145,15 @@ export default function CommunityPage() {
       {/* ── EXPLORE OTHER PATHS ── */}
       <section className="bg-zinc-50 px-6 sm:px-16 py-20 border-t border-zinc-100">
         <div className="max-w-[1400px] mx-auto">
-          <p className="text-blue-600 tracking-[0.4em] uppercase text-xs font-bold mb-8">Other Ways to Join</p>
+          <p className="text-sxc-blue tracking-[0.15em] uppercase text-xs font-bold mb-8">Other Ways to Join</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 border border-zinc-200">
             {OTHER_PAGES.map(({ label, href, num }) => (
               <Link key={label} href={href} className="group flex items-center justify-between p-8 border-b sm:border-b-0 sm:border-r last:border-0 hover:bg-white transition-colors duration-300">
                 <div>
                   <p className="text-[10px] text-zinc-400 font-black tracking-widest mb-2">{num}</p>
-                  <h3 className="text-2xl font-black uppercase text-zinc-900 group-hover:text-blue-600 transition-colors duration-300">{label}</h3>
+                  <h3 className="text-2xl font-black uppercase text-zinc-900 group-hover:text-sxc-blue transition-colors duration-300">{label}</h3>
                 </div>
-                <div className="w-10 h-10 rounded-full border-2 border-zinc-200 flex items-center justify-center group-hover:border-blue-600 group-hover:bg-blue-600 transition-all duration-300">
+                <div className="w-10 h-10 rounded-full border-2 border-zinc-200 flex items-center justify-center group-hover:border-sxc-blue group-hover:bg-sxc-blue transition-all duration-300">
                   <svg className="w-4 h-4 text-zinc-400 group-hover:text-white transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
