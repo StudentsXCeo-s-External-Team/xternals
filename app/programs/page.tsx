@@ -2,13 +2,43 @@ import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
 import { PROGRAMS } from "../../data/programs";
+import { getProgramsList, DashboardProgram } from "@/lib/dashboard";
 
 export const metadata: Metadata = {
   title: "Our Programs | StudentsxCEOs Jakarta",
   description: "Explore our diverse range of programs designed to bridge the gap between students and CEOs.",
 };
 
-export default function ProgramsPage() {
+export const revalidate = 60;
+
+type ProgramDisplay = {
+  slug: string;
+  badge: string;
+  category: string;
+  title: string;
+  month: string;
+  audience: string;
+  hero: string;
+  excerpt: string;
+};
+
+function toDisplay(p: DashboardProgram): ProgramDisplay {
+  return {
+    slug: p.slug,
+    badge: p.badge,
+    category: p.category,
+    title: p.title,
+    month: p.month,
+    audience: p.audience,
+    hero: p.hero,
+    excerpt: p.excerpt,
+  };
+}
+
+export default async function ProgramsPage() {
+  const remote = await getProgramsList();
+  const programs: ProgramDisplay[] = remote.length > 0 ? remote.map(toDisplay) : PROGRAMS;
+
   return (
     <main className="min-h-screen font-sans">
 
@@ -39,16 +69,14 @@ export default function ProgramsPage() {
 
       <section className="px-6 sm:px-12 max-w-[1400px] mx-auto bg-white text-zinc-900 py-20 pb-20">
         <div className="space-y-24">
-          {PROGRAMS.map((program, index) => (
+          {programs.map((program, index) => (
             <div
               key={program.slug}
               id={program.slug}
               className={`group flex flex-col ${index % 2 === 1 ? "lg:flex-row-reverse" : "lg:flex-row"} gap-12 lg:gap-20 items-center`}
             >
-              {/* Image Section */}
               <div className="w-full lg:w-1/2">
                 <div className="aspect-video bg-white border border-zinc-100 overflow-hidden relative flex items-center justify-center p-6 lg:p-10 transition-all duration-500 group-hover:border-sxc-skyblue">
-                  {/* Sharp foreground image */}
                   <Image
                     src={program.hero}
                     alt={program.title}
@@ -58,7 +86,6 @@ export default function ProgramsPage() {
                 </div>
               </div>
 
-              {/* Text Section */}
               <div className="w-full lg:w-1/2">
                 <div className="max-w-md">
                   <h2 className="text-4xl sm:text-5xl font-display mb-6 text-zinc-900 group-hover:text-sxc-blue transition-colors">

@@ -2,25 +2,34 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { VALUES_DATA } from "@/data/values-data";
+import { RESOURCES } from "@/data/resources-data";
+import { getResourcesList, DashboardResource } from "@/lib/dashboard";
 
 export const metadata: Metadata = {
   title: "Resources | StudentsxCEOs Jakarta",
   description: "Explore our insights, leadership toolkit, and career resources.",
 };
 
-export default function ResourcesPage() {
+export const revalidate = 60;
+
+type ResourceCard = { slug: string; badge: string; title: string; cover: string; href: string };
+
+function fromRemote(r: DashboardResource): ResourceCard {
+  return { slug: r.slug, badge: r.badge, title: r.title, cover: r.cover, href: `/resources/${r.slug}` };
+}
+
+export default async function ResourcesPage() {
+  const remote = await getResourcesList();
+  const cards: ResourceCard[] = remote.length > 0
+    ? remote.map(fromRemote)
+    : RESOURCES.map((r) => ({ slug: r.slug, badge: r.badge, title: r.title, cover: r.cover, href: `/resources/${r.slug}` }));
+
   return (
     <main className="min-h-screen bg-white text-zinc-900 font-sans">
 
       {/* HERO */}
       <section className="relative min-h-[80svh] md:min-h-screen w-full bg-sxc-navy">
-        <Image
-          src="/resources/Partnership.jpg"
-          alt="Resources Hero"
-          fill
-          priority
-          className="object-cover opacity-40"
-        />
+        <Image src="/resources/Partnership.jpg" alt="Resources Hero" fill priority className="object-cover opacity-40" />
         <div className="absolute inset-0 flex flex-col justify-end pb-12 px-6 sm:px-12 max-w-[1400px] mx-auto z-10">
           <h1 className="text-6xl sm:text-8xl font-display text-white leading-[0.9] tracking-tighter mb-8">
             Capturing<br />Leadership<br />Insights.
@@ -53,9 +62,7 @@ export default function ResourcesPage() {
       {/* VALUES */}
       <section className="py-16 bg-white px-6 sm:px-12">
         <div className="max-w-[1400px] mx-auto">
-          <h2 className="text-4xl font-display text-zinc-900 tracking-tighter mb-10">
-            Four Pillars. One Commitment.
-          </h2>
+          <h2 className="text-4xl font-display text-zinc-900 tracking-tighter mb-10">Four Pillars. One Commitment.</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 border-t border-zinc-200 pt-8">
             {VALUES_DATA.map((value) => (
               <div key={value.index} className="group flex flex-col border-b border-zinc-100 pb-6">
@@ -63,31 +70,29 @@ export default function ResourcesPage() {
                 <h3 className="text-xl font-display text-zinc-900 mb-2 group-hover:text-sxc-blue transition-colors">
                   {value.title.join(" ")}
                 </h3>
-                <p className="text-zinc-500 text-sm leading-snug">
-                  {value.description}
-                </p>
+                <p className="text-zinc-500 text-sm leading-snug">{value.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* RESEARCH CATEGORIES */}
+      {/* RESOURCE CARDS */}
       <section className="py-16 bg-white px-6 sm:px-12 border-t border-zinc-200">
         <div className="max-w-[1400px] mx-auto">
           <h2 className="text-4xl font-display text-zinc-900 tracking-tighter mb-10">Research & Analytics</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { title: "Blog / Insights", href: "/resources/blog-insights" },
-              { title: "Leadership Toolkit", href: "/resources/leadership-toolkit" },
-              { title: "Career Resources", href: "/resources/career-resources" }
-            ].map((card, idx) => (
-              <Link key={idx} href={card.href} className="group block border border-zinc-200 p-6 hover:border-sxc-blue transition-all">
-                <div className="aspect-video bg-sxc-navy mb-6 relative flex items-center justify-center overflow-hidden">
-                   <span className="text-white/20 font-display italic text-4xl">SxC.</span>
+            {cards.map((card) => (
+              <Link key={card.slug} href={card.href} className="group block border border-zinc-200 p-6 hover:border-sxc-blue transition-all">
+                <div className="aspect-video bg-sxc-navy mb-6 relative overflow-hidden flex items-center justify-center">
+                  {card.cover ? (
+                    <Image src={card.cover} alt={card.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500 opacity-70" />
+                  ) : (
+                    <span className="text-white/20 font-display italic text-4xl">SxC.</span>
+                  )}
                 </div>
                 <h3 className="text-2xl font-display mb-2 group-hover:text-sxc-blue">{card.title}</h3>
-                <span className="text-sxc-blue font-bold text-xs uppercase border-b border-sxc-blue pb-0.5">Explore →</span>
+                <span className="text-sxc-blue font-bold text-xs uppercase border-b border-sxc-blue pb-0.5">{card.badge} →</span>
               </Link>
             ))}
           </div>

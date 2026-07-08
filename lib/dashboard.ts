@@ -77,3 +77,134 @@ export async function getEventsList(limit = 20): Promise<DashboardEvent[]> {
   if (error) return [];
   return (data as DashboardEvent[]) ?? [];
 }
+
+export type DashboardProgram = {
+  id: string;
+  slug: string;
+  badge: string;
+  category: string;
+  title: string;
+  month: string;
+  audience: string;
+  cover: string;
+  hero: string;
+  images: string[];
+  excerpt: string;
+  content: string;
+  highlights: string[];
+  is_published: boolean;
+  sort_order: number;
+  created_at: string;
+};
+
+export type DashboardPartner = {
+  id: string;
+  name: string;
+  logo_url: string;
+  partner_type: "corporate" | "media" | "community";
+  website_url: string | null;
+  sort_order: number;
+  is_published: boolean;
+};
+
+export type DashboardMember = {
+  id: string;
+  name: string;
+  role_type: "executive" | "management" | "associate";
+  position: string | null;
+  department: string | null;
+  photo_url: string | null;
+  period: string | null;
+  bio: string | null;
+  social_url: string | null;
+  sort_order: number;
+};
+
+export type DashboardResource = {
+  id: string;
+  slug: string;
+  badge: string;
+  category: string;
+  title: string;
+  month: string;
+  audience: string;
+  cover: string;
+  hero: string;
+  excerpt: string;
+  content: string;
+  highlights: string[];
+  is_published: boolean;
+  sort_order: number;
+  created_at: string;
+};
+
+export async function getProgramsList(limit = 50): Promise<DashboardProgram[]> {
+  const { data, error } = await supabase
+    .from("programs")
+    .select("*")
+    .eq("is_published", true)
+    .order("sort_order", { ascending: true })
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error) return [];
+  return (data as DashboardProgram[]) ?? [];
+}
+
+export async function getProgramBySlug(slug: string): Promise<DashboardProgram | null> {
+  const { data, error } = await supabase
+    .from("programs")
+    .select("*")
+    .eq("slug", slug)
+    .eq("is_published", true)
+    .single();
+  if (error || !data) return null;
+  return data as DashboardProgram;
+}
+
+export async function getPartnersList(partnerType?: "corporate" | "media" | "community"): Promise<DashboardPartner[]> {
+  let query = supabase
+    .from("partners")
+    .select("*")
+    .eq("is_published", true)
+    .order("sort_order", { ascending: true })
+    .order("name", { ascending: true });
+  if (partnerType) query = query.eq("partner_type", partnerType);
+  const { data, error } = await query;
+  if (error) return [];
+  return (data as DashboardPartner[]) ?? [];
+}
+
+export async function getMembersList(roleType?: "executive" | "management" | "associate"): Promise<DashboardMember[]> {
+  let query = supabase
+    .from("members")
+    .select("*")
+    .order("sort_order", { ascending: true })
+    .order("name", { ascending: true });
+  if (roleType) query = query.eq("role_type", roleType);
+  const { data, error } = await query;
+  if (error) return [];
+  return (data as DashboardMember[]) ?? [];
+}
+
+export async function getResourcesList(limit = 50): Promise<DashboardResource[]> {
+  const { data, error } = await supabase
+    .from("resources")
+    .select("*")
+    .eq("is_published", true)
+    .order("sort_order", { ascending: true })
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error) return [];
+  return (data as DashboardResource[]) ?? [];
+}
+
+export async function getResourceBySlug(slug: string): Promise<DashboardResource | null> {
+  const { data, error } = await supabase
+    .from("resources")
+    .select("*")
+    .eq("slug", slug)
+    .eq("is_published", true)
+    .single();
+  if (error || !data) return null;
+  return data as DashboardResource;
+}

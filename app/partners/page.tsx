@@ -1,36 +1,30 @@
-// app/partners/page.tsx
-"use client";
-
-import { useEffect, useRef } from "react";
 import { sponsors } from "@/data/sponsor";
 import { mediaPartners } from "@/data/mediapartners";
 import Image from "next/image";
+import { getPartnersList, DashboardPartner } from "@/lib/dashboard";
+import { ParallaxGhost } from "@/components/ParallaxGhost";
 
-// ── Data ──────────────────────────────────────────────────────────
-// Replace placeholder arrays with real logo imports when ready
-// ── Logo card ─────────────────────────────────────────────────────
-function LogoCard({ label, size = "md", image, }: { label: string; size?: "lg" | "md" | "sm"; image: string;}) {
+export const revalidate = 60;
+
+function LogoCard({ label, size = "md", image }: { label: string; size?: "lg" | "md" | "sm"; image: string }) {
   const pad = size === "lg" ? "p-8" : size === "md" ? "p-6" : "p-5";
   return (
     <div className={`group relative z-10 aspect-3/2 bg-white border border-zinc-100 ${pad} flex items-center justify-center overflow-hidden`}>
-      {/* Logo placeholder — swap with <Image> */}
       <div className="relative z-10 w-full h-full flex items-center justify-center">
         <Image
           src={image}
-          alt="partners"
+          alt={label}
           width={600}
           height={400}
           className="object-contain max-w-full h-auto"
           sizes="(max-width: 640px) 80vw, (max-width: 1024px) 40vw, 20vw"
         />
       </div>
-      {/* Corner accent */}
       <div className="absolute top-0 left-0 w-0 h-0.5 bg-sxc-skyblue group-hover:w-full transition-all duration-500" />
     </div>
   );
 }
 
-// ── Section divider label ─────────────────────────────────────────
 function SectionDivider({ number, label, light = false }: { number: string; label: string; light?: boolean }) {
   return (
     <div className={`flex items-center gap-5 mb-14 ${light ? "text-white" : "text-zinc-900"}`}>
@@ -42,37 +36,38 @@ function SectionDivider({ number, label, light = false }: { number: string; labe
   );
 }
 
-export default function PartnersPage() {
-  const ghostRef = useRef<HTMLSpanElement>(null);
+type LogoItem = { id: string | number; name: string; image: string; alt: string };
 
-  useEffect(() => {
-    const onScroll = () => {
-      if (ghostRef.current) {
-        ghostRef.current.style.transform = `translateY(calc(-50% + ${window.scrollY * 0.12}px))`;
-      }
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+function toLogoItem(p: DashboardPartner): LogoItem {
+  return { id: p.id, name: p.name, image: p.logo_url, alt: p.name };
+}
+
+export default async function PartnersPage() {
+  const [remoteCorpRaw, remoteMediaRaw, remoteCommunityRaw] = await Promise.all([
+    getPartnersList("corporate"),
+    getPartnersList("media"),
+    getPartnersList("community"),
+  ]);
+
+  const corporate: LogoItem[] = remoteCorpRaw.length > 0
+    ? remoteCorpRaw.map(toLogoItem)
+    : sponsors.map((s) => ({ id: s.id, name: s.name, image: s.image, alt: s.alt }));
+
+  const media: LogoItem[] = remoteMediaRaw.length > 0
+    ? remoteMediaRaw.map(toLogoItem)
+    : mediaPartners.map((m) => ({ id: m.id, name: m.name, image: m.image, alt: m.alt }));
+
+  const community: LogoItem[] = remoteCommunityRaw.length > 0
+    ? remoteCommunityRaw.map(toLogoItem)
+    : mediaPartners.map((m) => ({ id: m.id, name: m.name, image: m.image, alt: m.alt }));
 
   return (
     <main className="min-h-screen font-sans overflow-x-hidden bg-white text-zinc-900">
 
-      {/* ══════════════════════════════════════════
-          HERO — full dark viewport
-          ══════════════════════════════════════════ */}
+      {/* HERO */}
       <section className="relative h-screen w-full bg-sxc-navy flex flex-col justify-end pb-28 px-6 sm:px-16 overflow-hidden">
+        <ParallaxGhost />
 
-        {/* Ghost text parallax */}
-        <span
-          ref={ghostRef}
-          className="absolute right-[-2vw] top-1/2 text-[22vw] font-black leading-none select-none pointer-events-none"
-          style={{ color: "rgba(255,255,255,0.028)", transition: "transform 0.05s linear" }}
-        >
-          SXC
-        </span>
-
-        {/* Figma ornaments */}
         <Image src="/ornaments/asterisk-navy.png" alt="" aria-hidden="true" width={400} height={400}
           className="absolute top-[6%] right-[20%] w-44 h-44 sm:w-60 sm:h-60 pointer-events-none select-none opacity-65"
           style={{ mixBlendMode: "screen" }} />
@@ -80,21 +75,18 @@ export default function PartnersPage() {
           className="absolute top-[30%] right-[4%] w-20 h-20 sm:w-28 sm:h-28 pointer-events-none select-none opacity-35"
           style={{ mixBlendMode: "screen" }} />
 
-        {/* Blue left stripe */}
         <div className="absolute top-0 left-0 w-[3px] h-full bg-sxc-skyblue" />
 
         <div className="relative z-10 max-w-[1400px] mx-auto w-full">
           <p className="text-sxc-skyblue tracking-[0.15em] uppercase text-xs font-semibold mb-6">
             StudentsxCEOs Jakarta
           </p>
-
           <h1 className="text-[13vw] sm:text-[10vw] md:text-[8vw] font-black text-white uppercase leading-[0.88] tracking-tight mb-10">
             Our<br />
             <span className="text-transparent" style={{ WebkitTextStroke: "2px var(--color-sxc-skyblue)" }}>
               Partners.
             </span>
           </h1>
-
           <div className="flex flex-col sm:flex-row sm:items-end gap-8 sm:gap-20">
             <p className="text-zinc-400 text-lg max-w-md leading-relaxed">
               We collaborate with leading companies and organisations to bridge the gap between students and industry leaders.
@@ -107,13 +99,11 @@ export default function PartnersPage() {
           </div>
         </div>
 
-        {/* Scroll hint */}
         <div className="absolute bottom-10 right-14 flex flex-col items-center gap-2 opacity-30">
           <div className="w-px h-14 bg-white animate-pulse" />
           <span className="text-white text-[9px] tracking-[0.3em] uppercase" style={{ writingMode: "vertical-rl" }}>scroll</span>
         </div>
 
-        {/* Wave transition */}
         <div className="absolute bottom-0 left-0 w-full z-20" style={{ height: "180px" }}>
           <div className="absolute inset-0" style={{
             background: "linear-gradient(to bottom, transparent 0%, rgba(12,15,30,0.7) 40%, #ffffff 100%)"
@@ -125,51 +115,34 @@ export default function PartnersPage() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
-          01 — PREVIOUS CORPORATE PARTNERS
-          Full-width, generous grid
-          ══════════════════════════════════════════ */}
+      {/* 01 — CORPORATE */}
       <section id="corporate" className="relative bg-white py-24 sm:py-32 px-6 sm:px-16" style={{ marginTop: "-2px" }}>
-        {/* Ghost number */}
         <span className="absolute top-8 right-8 text-[15vw] font-black text-zinc-100 leading-none select-none pointer-events-none">01</span>
-
         <div className="max-w-[1400px] mx-auto relative z-10">
           <SectionDivider number="01" label="Previous Corporate Partners" />
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-0 border border-zinc-100">
-            {sponsors.map((sponsor) => (
-              <div key={sponsor.id} className="border-r border-b border-zinc-100 last:border-r-0">
-                <LogoCard label={sponsor.name} image={sponsor.image} size="lg" />
-
+            {corporate.map((item) => (
+              <div key={item.id} className="border-r border-b border-zinc-100 last:border-r-0">
+                <LogoCard label={item.name} image={item.image} size="lg" />
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
-          02 — PREVIOUS MEDIA PARTNERS
-          Dark band — visual contrast break
-          ══════════════════════════════════════════ */}
+      {/* 02 — MEDIA */}
       <section id="media" className="relative bg-sxc-navy py-24 sm:py-32 px-6 sm:px-16 overflow-hidden">
         <span className="absolute top-8 right-8 text-[15vw] font-black leading-none select-none pointer-events-none" style={{ color: "rgba(255,255,255,0.03)" }}>02</span>
         <div className="absolute top-0 left-0 w-full h-[3px] bg-sxc-skyblue" />
         <div className="absolute bottom-0 left-0 w-full h-[3px] bg-sxc-skyblue" />
-
         <div className="max-w-[1400px] mx-auto relative z-10">
           <SectionDivider number="02" label="Previous Media Partners" light />
-
-          {/* Larger cards for media — showcase */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-0 border border-white/10">
-            {mediaPartners.map((media) => (
-              <div key={media.id} className="border-r border-b border-white/10 last:border-r-0">
+            {media.map((item) => (
+              <div key={item.id} className="border-r border-b border-white/10 last:border-r-0">
                 <div className="group relative aspect-3/2 bg-transparent flex items-center justify-center overflow-hidden border-0">
-                  <Image
-                    src={media.image}
-                    alt={media.alt}
-                    fill
-                    className="object-contain p-6"
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
-                  />
+                  <Image src={item.image} alt={item.alt} fill className="object-contain p-6"
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw" />
                   <div className="absolute top-0 left-0 w-0 h-0.5 bg-sxc-skyblue-light group-hover:w-full transition-all duration-500" />
                 </div>
               </div>
@@ -178,38 +151,28 @@ export default function PartnersPage() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
-          03 — PREVIOUS COMMUNITY PARTNERS
-          Light section, staggered grid
-          ══════════════════════════════════════════ */}
+      {/* 03 — COMMUNITY */}
       <section id="community" className="relative bg-zinc-50 py-24 sm:py-32 px-6 sm:px-16 overflow-hidden">
         <span className="absolute top-8 right-8 text-[15vw] font-black text-zinc-200 leading-none select-none pointer-events-none">03</span>
-
         <div className="max-w-[1400px] mx-auto relative z-10">
           <SectionDivider number="03" label="Previous Community Partners" />
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-0 border border-zinc-200">
-            {mediaPartners.map((media) => (
-              <div key={media.id} className="border-r border-b border-zinc-200 last:border-r-0">
-                <LogoCard label={media.name} image={media.image} size="md" />
+            {community.map((item) => (
+              <div key={item.id} className="border-r border-b border-zinc-200 last:border-r-0">
+                <LogoCard label={item.name} image={item.image} size="md" />
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
-          CTA — full-bleed dark, no rounded corners
-          ══════════════════════════════════════════ */}
+      {/* CTA */}
       <section className="relative bg-sxc-navy overflow-hidden">
-        {/* Blue glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-sxc-skyblue/10 blur-3xl rounded-full" />
         <div className="absolute top-0 left-0 w-full h-[3px] bg-sxc-skyblue" />
-
-        {/* Ghost text */}
         <span className="absolute left-0 bottom-0 text-[14vw] font-black leading-none select-none pointer-events-none translate-y-2" style={{ color: "rgba(255,255,255,0.025)" }}>
           PARTNER
         </span>
-
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 sm:px-16 py-28 sm:py-36">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-12">
             <div>
@@ -219,7 +182,6 @@ export default function PartnersPage() {
                 <span className="text-transparent" style={{ WebkitTextStroke: "2px var(--color-sxc-skyblue)" }}>With Us.</span>
               </h2>
             </div>
-
             <div className="max-w-lg">
               <p className="text-zinc-300 text-lg leading-relaxed mb-10">
                 Interested in collaborating with StudentsxCEOs Jakarta? We are always open to new partnerships that bring real value to our student community and your organisation.

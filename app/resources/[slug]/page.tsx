@@ -2,17 +2,61 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { RESOURCES } from "@/data/resources-data";
+import { getResourceBySlug, getResourcesList, DashboardResource } from "@/lib/dashboard";
+
+export const revalidate = 60;
+export const dynamicParams = true;
 
 export function generateStaticParams() {
   return RESOURCES.map((item) => ({ slug: item.slug }));
 }
 
+type ResourceDisplay = {
+  slug: string;
+  title: string;
+  badge: string;
+  category: string;
+  month: string;
+  hero: string;
+  cover: string;
+  excerpt: string;
+  content: string;
+  highlights: string[];
+};
+
+function fromRemote(r: DashboardResource): ResourceDisplay {
+  return {
+    slug: r.slug,
+    title: r.title,
+    badge: r.badge,
+    category: r.category,
+    month: r.month,
+    hero: r.hero,
+    cover: r.cover,
+    excerpt: r.excerpt,
+    content: r.content,
+    highlights: r.highlights ?? [],
+  };
+}
+
+async function resolveResource(slug: string): Promise<ResourceDisplay | null> {
+  const remote = await getResourceBySlug(slug);
+  if (remote) return fromRemote(remote);
+  return RESOURCES.find((r) => r.slug === slug) ?? null;
+}
+
 export default async function ResourceDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const item = RESOURCES.find((r) => r.slug === slug);
+  const [item, allRemote] = await Promise.all([
+    resolveResource(slug),
+    getResourcesList(),
+  ]);
   if (!item) return notFound();
 
-  const otherResources = RESOURCES.filter((r) => r.slug !== item.slug).slice(0, 3);
+  const otherRemote = allRemote.filter((r: DashboardResource) => r.slug !== slug).slice(0, 3).map(fromRemote);
+  const otherResources: ResourceDisplay[] = otherRemote.length > 0
+    ? otherRemote
+    : RESOURCES.filter((r) => r.slug !== slug).slice(0, 3);
 
   return (
     <main className="relative w-full bg-white text-zinc-900 overflow-hidden">
@@ -50,24 +94,22 @@ export default async function ResourceDetail({ params }: { params: Promise<{ slu
       {/* Content Grid */}
       <section className="mx-auto max-w-5xl px-6 sm:px-10 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          {/* Main Body */}
           <div className="lg:col-span-8">
             <p className="text-xl text-zinc-700 font-medium border-l-2 border-sxc-skyblue pl-5 mb-10 leading-relaxed">
               {item.excerpt}
             </p>
             <div className="space-y-6 text-lg text-zinc-600 leading-relaxed">
-              {item.content.split("\n\n").map((para, i) => (
+              {item.content.split("\n\n").map((para: string, i: number) => (
                 <p key={i}>{para}</p>
               ))}
             </div>
           </div>
 
-          {/* Sidebar */}
           <aside className="lg:col-span-4 space-y-6">
             <div className="rounded-xl border border-zinc-200 p-6 sticky top-28">
               <p className="text-xs font-semibold tracking-[0.15em] text-zinc-500 uppercase mb-4">Inside this Resource</p>
               <ul className="space-y-4">
-                {item.highlights.map((point, i) => (
+                {item.highlights.map((point: string, i: number) => (
                   <li key={i} className="flex items-start gap-3 text-sm text-zinc-700">
                     <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-sxc-skyblue shrink-0" />
                     {point}
@@ -84,7 +126,7 @@ export default async function ResourceDetail({ params }: { params: Promise<{ slu
         <div className="mx-auto max-w-5xl px-6">
           <h2 className="text-3xl font-extrabold mb-10">More Resources</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-            {otherResources.map((res) => (
+            {otherResources.map((res: ResourceDisplay) => (
               <Link key={res.slug} href={`/resources/${res.slug}`} className="group block bg-white rounded-xl border border-zinc-200 overflow-hidden hover:shadow-xl transition-all">
                 <div className="aspect-video relative overflow-hidden">
                   <Image src={res.cover} alt={res.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />

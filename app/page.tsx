@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ScrollGradient from "../components/ScrollGradient";
 import ScrollReveal from "../components/ScrollReveal";
-import { getNewsList } from "@/lib/dashboard";
+import { getNewsList, getPartnersList } from "@/lib/dashboard";
 import { sponsors } from "@/data/sponsor";
 import { mediaPartners } from "@/data/mediapartners";
 import HeroSection from "../components/HeroSection";
@@ -11,13 +11,26 @@ import { MagneticButton } from "../components/MagneticButton";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const dashboardNews = await getNewsList(4);
+  const [dashboardNews, remoteCorpRaw, remoteMediaRaw] = await Promise.all([
+    getNewsList(4),
+    getPartnersList("corporate"),
+    getPartnersList("media"),
+  ]);
+
   const newsItems = dashboardNews.map((n) => ({
     slug: n.slug,
     cover: n.image_url ?? "",
     category: "NEWS",
     title: n.title,
   }));
+
+  const corpLogos = remoteCorpRaw.length > 0
+    ? remoteCorpRaw.map((p) => ({ id: p.id, image: p.logo_url, alt: p.name }))
+    : sponsors;
+
+  const mediaLogos = remoteMediaRaw.length > 0
+    ? remoteMediaRaw.map((p) => ({ id: p.id, image: p.logo_url, alt: p.name }))
+    : mediaPartners;
   return (
     <main className="relative min-h-[50svh] w-full bg-sxc-navy text-white overflow-hidden">
       <ScrollGradient />
@@ -86,7 +99,7 @@ export default async function Home() {
           </div>
           <div className="mt-8 relative overflow-hidden js-reveal">
             <div className="logo-marquee flex items-center gap-x-10">
-              {[...sponsors, ...sponsors].map((logo, i) => (
+              {[...corpLogos, ...corpLogos].map((logo, i) => (
                 <img key={i} src={logo.image} alt={logo.alt} className="h-10 sm:h-12 w-28 object-contain" />
               ))}
             </div>
@@ -99,7 +112,7 @@ export default async function Home() {
           </div>
           <div className="mt-8 relative overflow-hidden js-reveal">
             <div className="logo-marquee flex items-center gap-x-10">
-              {[...mediaPartners, ...mediaPartners].map((logo, i) => (
+              {[...mediaLogos, ...mediaLogos].map((logo, i) => (
                 <img key={i} src={logo.image} alt={logo.alt} className="h-10 sm:h-12 w-28 object-contain" />
               ))}
             </div>
